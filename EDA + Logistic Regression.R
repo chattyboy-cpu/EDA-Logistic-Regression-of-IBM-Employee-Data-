@@ -6,30 +6,29 @@ output: html_document
 ---
 Loading the dataset
 ```{r}
-df = read.csv("C:\\Users\\lamin\\Downloads\\WA_Fn-UseC_-HR-Employee-Attrition.csv")
+# Update this path if necessary to point to your local data file
+df <- read.csv("WA_Fn-UseC_-HR-Employee-Attrition.csv")
 ```
-```{r}
-head(df,15)
-```
-loading the necessary libries
+Loading the necessary libraries
 ```{r}
 library(dplyr)
 library(ggplot2)
 library(ggthemes)
+library(caret)
+```
+```{r}
+head(df,15)
 ```
 
 
 ```{r}
 summary(df)
 ```
-```{r}
-attach(df)
-```
 
 
 ```{r}
 #filter rows where attrition is NO and select the first 550 rows
-attrition_no = df %>% 
+attrition_no <- df %>% 
   filter(Attrition == "No") %>%
   slice_head(n= 550)
 ```
@@ -37,8 +36,6 @@ attrition_no = df %>%
 attrition_no
 ```
 ```{r}
-library(dplyr)
-library(ggplot2)
 
 # Create age groups
 df <- df %>%
@@ -69,7 +66,7 @@ ggplot(attrition_by_age, aes(x = AgeGroup, y = AttritionRate)) +
 ```
 ```{r}
 #filter rows where attrition is NO and select the first 550 rows
-attrition_Yes = df %>% 
+attrition_Yes <- df %>% 
   filter(Attrition == "Yes") %>%
   slice_head(n= 550)
 ```
@@ -108,7 +105,7 @@ dim(df)
 
 
 ```{r}
-### Overtime vs Attiriton
+### Overtime vs Attrition
 l <- ggplot(df, aes(OverTime,fill = Attrition))
 l <- l + geom_histogram(stat="count")
 print(l)
@@ -116,12 +113,9 @@ tapply(as.numeric(df$Attrition) - 1 ,df$OverTime,mean)
 ```
 The employees how work over time have more attrition
 
-```{r}
-```
-
 
 ```{r}
-### MaritalStatus vs Attiriton
+### MaritalStatus vs Attrition
 x<- ggplot(df, aes(MaritalStatus,fill = Attrition))
 x <- x + geom_histogram(stat="count")
 print(x)
@@ -136,7 +130,6 @@ table(df$Attrition)
 prop.table(table(df$Attrition)) * 100
 
 # Bar plot
-library(ggplot2)
 ggplot(df, aes(x = Attrition, fill = Attrition)) +
   geom_bar() +
   labs(title = "Attrition Count", y = "Number of Employees")
@@ -232,11 +225,6 @@ test$pred_prob <- predict(model, newdata = test, type = "response")
 test$pred_class <- ifelse(test$pred_prob > 0.5, 1, 0)
 test$pred_class <- as.factor(test$pred_class)
 
-```
-
-
-```{r}
-library(caret)
 ```
 
 
